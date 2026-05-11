@@ -1,0 +1,80 @@
+.LinkRobinsCountdownWidget {
+
+    .FofWidgets-Widget-content {
+        > *:first-child { margin-top: 0; }
+        > *:last-child  { margin-bottom: 0; }
+    }
+
+    a.LinkRobinsCountdown-boxesLink,
+    a.LinkRobinsCountdown-doneLink {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: none;
+            .LinkRobinsCountdown-box {
+                border-color: var(--primary-color, var(--control-color));
+            }
+            .LinkRobinsCountdown-done {
+                color: var(--primary-color, var(--text-color));
+            }
+        }
+    }
+}
+
+.LinkRobinsCountdown-boxes {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+}
+
+.LinkRobinsCountdown-box {
+    background: var(--control-bg);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 8px 4px;
+    text-align: center;
+    transition: border-color 0.15s ease;
+    min-width: 0;
+    overflow: hidden;
+
+    &-value {
+        font-family: ui-monospace, "SF Mono", "Cascadia Mono",
+                     "Roboto Mono", Consolas, Menlo, monospace;
+        font-variant-numeric: tabular-nums;
+        font-feature-settings: "tnum";
+        font-weight: 700;
+        font-size: 1.05rem;
+        line-height: 1.15;
+        color: var(--text-color);
+        white-space: nowrap;
+    }
+
+    &-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 4px;
+        color: var(--muted-color);
+        white-space: nowrap;
+    }
+}
+
+.LinkRobinsCountdown-done {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 8px 0;
+    color: var(--text-color);
+    transition: color 0.15s ease;
+}
+
+.LinkRobinsCountdown-empty {
+    text-align: center;
+    color: var(--muted-color);
+    font-style: italic;
+    font-size: 0.85rem;
+    padding: 8px 0;
+}

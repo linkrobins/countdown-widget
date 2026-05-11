@@ -1,0 +1,27 @@
+{
+    "name": "linkrobins/countdown-widget",
+    "description": "Countdown widget for fof/forum-widgets-core",
+    "type": "flarum-extension",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "flarum/core": "^2.0",
+        "fof/forum-widgets-core": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "LinkRobins\\CountdownWidget\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "Link Robins Countdown",
+            "category": "forum-widget",
+            "icon": {
+                "name": "fas fa-hourglass-half",
+                "color": "#07adcc",
+                "backgroundColor": "#1a2535"
+            }
+        }
+    }
+}
