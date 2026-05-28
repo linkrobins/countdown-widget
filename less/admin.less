@@ -1,0 +1,11 @@
+// Timezone row in the admin settings: keep the "Use my timezone" button on
+// the same line as the timezone text input. Without this, the .LinkRobinsCountdown-tzRow
+// div falls back to a block layout and the button stacks below the input.
+.LinkRobinsCountdown-tzRow {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+
+    > .FormControl { flex: 1; min-width: 0; }
+    > .Button      { flex-shrink: 0; }
+}

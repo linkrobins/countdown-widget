@@ -4,9 +4,9 @@
     "type": "flarum-extension",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "flarum/core": "^2.0",
-        "fof/forum-widgets-core": "*"
+        "fof/forum-widgets-core": "^2.0.0-beta.3"
     },
     "autoload": {
         "psr-4": {

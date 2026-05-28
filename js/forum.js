@@ -70,6 +70,12 @@
                 var self = this;
                 if (this._tick) return;
                 this._tick = setInterval(function () {
+                    if (self._target !== null && self._target - Date.now() <= 0) {
+                        if (self._tick) {
+                            clearInterval(self._tick);
+                            self._tick = null;
+                        }
+                    }
                     m.redraw();
                 }, 1000);
             }
@@ -181,4 +187,3 @@
 
 })();
 
-module.exports = {};
