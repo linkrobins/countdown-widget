@@ -24,7 +24,7 @@ app.initializers.add('linkrobins/countdown-widget', () => {
       type: 'text',
       label: t('title_label'),
       help: t('title_help'),
-      placeholder: 'Launching in...',
+      placeholder: t('title_placeholder'),
     })
 
     .registerSetting({
@@ -81,7 +81,7 @@ app.initializers.add('linkrobins/countdown-widget', () => {
       type: 'text',
       label: t('done_message_label'),
       help: t('done_message_help'),
-      placeholder: '🎉 We are live!',
+      placeholder: t('done_message_placeholder'),
     })
 
     .registerSetting({

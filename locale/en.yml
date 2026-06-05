@@ -9,6 +9,7 @@ linkrobins-countdown-widget:
   admin:
     settings:
       title_label: "Title"
+      title_placeholder: "Launching in..."
       title_help:  "Optional. Shown above the countdown. Leave blank for no header."
 
       icon_label:  "Icon class"
@@ -22,6 +23,7 @@ linkrobins-countdown-widget:
       use_my_timezone: "Use my timezone"
 
       done_message_label: "Done message"
+      done_message_placeholder: "🎉 We are live!"
       done_message_help:  "What to display once the countdown hits zero. Defaults to a party emoji if blank."
 
       link_url_label: "Link URL"
