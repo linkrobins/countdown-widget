@@ -1,6 +1,6 @@
 import app from 'flarum/common/app';
 
-import { naiveToUTC, breakDown, pad2, TimeParts } from '../utils/time';
+import { naiveToUTC, breakDown, twoDigits, TimeParts } from '../utils/time';
 
 /**
  * Builds the Countdown widget class.
@@ -130,7 +130,7 @@ export default function makeCountdownWidget(Widget: any) {
 
     _box(value: number, label: any) {
       // Days isn't padded if 3+ digits (e.g. a 1-year countdown shows "365").
-      const display = value >= 100 ? String(value) : pad2(value);
+      const display = value >= 100 ? String(value) : twoDigits(value);
       return m('div', { className: 'LinkRobinsCountdown-box' }, [
         m('div', { className: 'LinkRobinsCountdown-box-value' }, display),
         m('div', { className: 'LinkRobinsCountdown-box-label' }, label),

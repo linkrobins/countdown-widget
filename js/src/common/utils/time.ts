@@ -41,7 +41,7 @@ export function breakDown(ms: number): TimeParts {
   };
 }
 
-export function pad2(n: number): string {
+export function twoDigits(n: number): string {
   n = Number(n) || 0;
   return n < 10 ? `0${n}` : String(n);
 }
