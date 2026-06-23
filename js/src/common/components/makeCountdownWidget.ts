@@ -1,6 +1,11 @@
 import app from 'flarum/common/app';
+import type Mithril from 'mithril';
 
 import { naiveToUTC, breakDown, twoDigits, TimeParts } from '../utils/time';
+
+// fof/forum-widgets-core doesn't export a usable type for its Widget base, so
+// accept any constructor (resolved from the registry at call time).
+type WidgetCtor = new (...args: any[]) => any;
 
 /**
  * Builds the Countdown widget class.
@@ -9,7 +14,7 @@ import { naiveToUTC, breakDown, twoDigits, TimeParts } from '../utils/time';
  * module load) so the class isn't defined against an `ext:` binding that may
  * not be registered yet during cross-bundle load.
  */
-export default function makeCountdownWidget(Widget: any) {
+export default function makeCountdownWidget(Widget: WidgetCtor) {
   return class CountdownWidget extends Widget {
     private _tick: ReturnType<typeof setInterval> | null = null;
     private _target: number | null = null;
@@ -20,7 +25,7 @@ export default function makeCountdownWidget(Widget: any) {
       return (app.forum && (app.forum.attribute(key) as string)) || '';
     }
 
-    oninit(vnode: any) {
+    oninit(vnode: Mithril.Vnode) {
       super.oninit(vnode);
       this._computeTarget();
       this._startTicking();
@@ -128,7 +133,7 @@ export default function makeCountdownWidget(Widget: any) {
       return boxes;
     }
 
-    _box(value: number, label: any) {
+    _box(value: number, label: Mithril.Children) {
       // Days isn't padded if 3+ digits (e.g. a 1-year countdown shows "365").
       const display = value >= 100 ? String(value) : twoDigits(value);
       return m('div', { className: 'LinkRobinsCountdown-box' }, [

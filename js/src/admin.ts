@@ -32,7 +32,7 @@ app.initializers.add('linkrobins/countdown-widget', () => {
       type: 'text',
       label: t('icon_label'),
       help: t('icon_help'),
-      placeholder: 'fas fa-rocket',
+      placeholder: t('icon_placeholder'),
     })
 
     .registerSetting({
@@ -56,7 +56,7 @@ app.initializers.add('linkrobins/countdown-widget', () => {
             className: 'FormControl',
             type: 'text',
             value: value(),
-            oninput: (e: any) => value(e.target.value),
+            oninput: (e: InputEvent & { target: HTMLInputElement }) => value(e.target.value),
             placeholder: 'UTC',
           }),
           m(
@@ -89,6 +89,6 @@ app.initializers.add('linkrobins/countdown-widget', () => {
       type: 'url',
       label: t('link_url_label'),
       help: t('link_url_help'),
-      placeholder: 'https://example.com/launch',
+      placeholder: t('link_url_placeholder'),
     });
 });
