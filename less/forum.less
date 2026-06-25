@@ -45,14 +45,14 @@
         font-variant-numeric: tabular-nums;
         font-feature-settings: "tnum";
         font-weight: 700;
-        font-size: 1.05rem;
+        font-size: calc(1.05rem * var(--lr-text-scale, 1));
         line-height: 1.15;
         color: var(--text-color);
         white-space: nowrap;
     }
 
     &-label {
-        font-size: 0.7rem;
+        font-size: calc(0.7rem * var(--lr-text-scale, 1));
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.05em;
@@ -64,7 +64,7 @@
 
 .LinkRobinsCountdown-done {
     text-align: center;
-    font-size: 1.1rem;
+    font-size: calc(1.1rem * var(--lr-text-scale, 1));
     font-weight: 600;
     padding: 8px 0;
     color: var(--text-color);
@@ -75,6 +75,6 @@
     text-align: center;
     color: var(--muted-color);
     font-style: italic;
-    font-size: 0.85rem;
+    font-size: calc(0.85rem * var(--lr-text-scale, 1));
     padding: 8px 0;
 }
