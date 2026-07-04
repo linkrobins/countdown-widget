@@ -91,11 +91,7 @@ export default function makeCountdownWidget(Widget: WidgetCtor) {
 
     content() {
       if (this._target === null) {
-        return m(
-          'div',
-          { className: 'LinkRobinsCountdown-empty' },
-          app.translator.trans('linkrobins-countdown-widget.forum.not_configured')
-        );
+        return m('div', { className: 'LinkRobinsCountdown-empty' }, app.translator.trans('linkrobins-countdown-widget.forum.not_configured'));
       }
 
       const remaining = this._target - Date.now();

@@ -42,39 +42,43 @@ app.initializers.add('linkrobins/countdown-widget', () => {
       help: t('target_help'),
     })
 
-    .registerSetting(function (this: any) {
-      const value = this.setting('linkrobins-countdown-widget.timezone', 'UTC');
+    .registerSetting(
+      function (this: any) {
+        const value = this.setting('linkrobins-countdown-widget.timezone', 'UTC');
 
-      return m(
-        'div',
-        { className: 'Form-group' },
-        m('label', t('timezone_label')),
-        m(
+        return m(
           'div',
-          { className: 'LinkRobinsCountdown-tzRow' },
-          m('input', {
-            className: 'FormControl',
-            type: 'text',
-            value: value(),
-            oninput: (e: InputEvent & { target: HTMLInputElement }) => value(e.target.value),
-            placeholder: 'UTC',
-          }),
+          { className: 'Form-group' },
+          m('label', t('timezone_label')),
           m(
-            'button',
-            {
-              type: 'button',
-              className: 'Button',
-              onclick: () => {
-                value(getBrowserTimezone());
-                m.redraw();
+            'div',
+            { className: 'LinkRobinsCountdown-tzRow' },
+            m('input', {
+              className: 'FormControl',
+              type: 'text',
+              value: value(),
+              oninput: (e: InputEvent & { target: HTMLInputElement }) => value(e.target.value),
+              placeholder: 'UTC',
+            }),
+            m(
+              'button',
+              {
+                type: 'button',
+                className: 'Button',
+                onclick: () => {
+                  value(getBrowserTimezone());
+                  m.redraw();
+                },
               },
-            },
-            t('use_my_timezone')
-          )
-        ),
-        m('p', { className: 'helpText' }, t('timezone_help'))
-      );
-    }, 0, 'linkrobins-countdown-widget.timezone')
+              t('use_my_timezone')
+            )
+          ),
+          m('p', { className: 'helpText' }, t('timezone_help'))
+        );
+      },
+      0,
+      'linkrobins-countdown-widget.timezone'
+    )
 
     .registerSetting({
       setting: 'linkrobins-countdown-widget.done_message',
