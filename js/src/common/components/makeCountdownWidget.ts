@@ -31,8 +31,13 @@ export default function makeCountdownWidget(Widget: WidgetCtor) {
       this._startTicking();
     }
 
-    onremove() {
+    onremove(vnode: Mithril.VnodeDOM) {
       this._stopTicking();
+      // The base class resolves dynamically from fof/forum-widgets-core, so
+      // always give it (and Flarum's Component above it) the chance to run
+      // its own teardown — today that's a no-op stub, but this subclass
+      // shouldn't be the reason a future base-class cleanup never runs.
+      super.onremove?.(vnode);
     }
 
     _computeTarget() {

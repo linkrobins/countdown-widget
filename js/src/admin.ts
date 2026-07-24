@@ -1,6 +1,19 @@
 import app from 'flarum/admin/app';
+import type Stream from 'flarum/common/utils/Stream';
 
 import registerWidget from './common/registerWidget';
+
+/**
+ * What Flarum actually binds `this` to when it invokes a custom
+ * settings-renderer callback: the admin page, whose setting() hands back a
+ * getter/setter stream. fof/forum-widgets-core exports no type for it, so
+ * this minimal local shim keeps the renderer type-checked. Note the stream
+ * is used as BOTH getter (value()) and setter (value(x)) below — a
+ * getter-only type would not compile.
+ */
+interface SettingsRendererContext {
+  setting(key: string, fallback?: string): Stream<string>;
+}
 
 function getBrowserTimezone(): string {
   try {
@@ -43,7 +56,7 @@ app.initializers.add('linkrobins/countdown-widget', () => {
     })
 
     .registerSetting(
-      function (this: any) {
+      function (this: SettingsRendererContext) {
         const value = this.setting('linkrobins-countdown-widget.timezone', 'UTC');
 
         return m(

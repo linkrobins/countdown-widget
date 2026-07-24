@@ -21,7 +21,7 @@
     },
     "extra": {
         "flarum-extension": {
-            "title": "Link Robins Countdown",
+            "title": "Link Robins Countdown Widget",
             "category": "forum-widget",
             "icon": {
                 "name": "fas fa-hourglass-half",

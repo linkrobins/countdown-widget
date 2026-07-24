@@ -30,7 +30,7 @@ composer require linkrobins/countdown-widget
 php flarum cache:clear
 ```
 
-In Flarum admin → **Extensions**, find **Link Robins Countdown** under the **Forum Widgets** category and enable it. Configure the target on its settings page, then go to **FoF Forum Widgets** settings and place the widget where you want it.
+In Flarum admin → **Extensions**, find **Link Robins Countdown Widget** under the **Forum Widgets** category and enable it. Configure the target on its settings page, then go to **FoF Forum Widgets** settings and place the widget where you want it.
 
 ## Settings
 
