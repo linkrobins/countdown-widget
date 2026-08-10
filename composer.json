@@ -2,6 +2,8 @@
     "name": "linkrobins/countdown-widget",
     "description": "Countdown widget for fof/forum-widgets-core",
     "type": "flarum-extension",
+    "keywords": ["flarum", "widget", "countdown", "timer", "forum-widgets"],
+    "homepage": "https://linkrobins.com/extensions/countdown-widget",
     "license": "MIT",
     "authors": [
         {
