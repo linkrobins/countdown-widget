@@ -11,7 +11,7 @@ Renders a four-box countdown — days, hours, minutes, seconds — ticking down 
 - **Configurable target** via the browser's native date+time picker (year, month, day, hour, minute)
 - **Timezone-aware** — admin picks the IANA timezone for the target, and every visitor counts down to the same actual instant regardless of where they are
 - **One tick per second** with smooth Mithril redraws
-- **Optional title + FontAwesome icon** above the countdown
+- **Optional title, description, and FontAwesome icon** above the countdown
 - **Done state** with a configurable message (defaults to 🎉) when the countdown reaches zero
 - **Optional link** wrapping the whole widget — useful for "launching in… [click for details]"
 - **Theme-friendly** — uses Flarum 2's CSS custom properties so colors pick up your theme automatically
@@ -35,6 +35,7 @@ In Flarum admin → **Extensions**, find **Link Robins Countdown Widget** under 
 ## Settings
 
 - **Title** (optional) — shown above the countdown
+- **Description** (optional): small text shown under the title, for a date range, a venue, or any extra detail
 - **Icon** (optional) — FontAwesome class shown next to the title (e.g. `fas fa-rocket`)
 - **Target date and time** — uses the browser's date picker; covers year, month, day, hour, and minute
 - **Timezone** — IANA name like `UTC`, `America/New_York`, `Europe/London`, `Asia/Tokyo`. There's a "Use my timezone" button that fills this with whatever your browser thinks the local zone is

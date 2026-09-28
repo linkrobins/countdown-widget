@@ -78,19 +78,27 @@ export default function makeCountdownWidget(Widget: WidgetCtor) {
       return this.attr('linkrobinsCountdownTitle');
     }
 
-    // The base header() only renders when title() is set; preserve the old
-    // behaviour of showing an icon-only header too.
+    description(): string {
+      return this.attr('linkrobinsCountdownDescription');
+    }
+
+    // The base header() renders icon, title and description together, but only
+    // when title() is set. Keep it as the primary path so that markup stays
+    // fof's own, and hand-build the no-title case so an icon and/or a
+    // description still get a header instead of rendering nothing at all.
     header() {
       const base = super.header();
       if (base) return base;
 
       const iconName = this.icon();
-      if (!iconName) return null;
+      const description = this.description();
+      if (!iconName && !description) return null;
 
       return m(
         'div',
         { className: 'FofWidgets-Widget-title' },
-        m('span', { className: 'FofWidgets-Widget-title-icon' }, m('i', { className: iconName }))
+        iconName ? m('span', { className: 'FofWidgets-Widget-title-icon' }, m('i', { className: iconName })) : null,
+        description ? m('div', { className: 'FofWidgets-Widget-title-desc' }, description) : null
       );
     }
 
