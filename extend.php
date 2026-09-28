@@ -15,6 +15,7 @@ return [
 
     (new Extend\Settings())
         ->default('linkrobins-countdown-widget.title',        '')
+        ->default('linkrobins-countdown-widget.description',  '')
         ->default('linkrobins-countdown-widget.icon',         '')
         ->default('linkrobins-countdown-widget.target',       '')
         ->default('linkrobins-countdown-widget.timezone',     'UTC')
@@ -22,6 +23,7 @@ return [
         ->default('linkrobins-countdown-widget.link_url',     '')
 
         ->serializeToForum('linkrobinsCountdownTitle',       'linkrobins-countdown-widget.title')
+        ->serializeToForum('linkrobinsCountdownDescription', 'linkrobins-countdown-widget.description')
         ->serializeToForum('linkrobinsCountdownIcon',        'linkrobins-countdown-widget.icon')
         ->serializeToForum('linkrobinsCountdownTarget',      'linkrobins-countdown-widget.target')
         ->serializeToForum('linkrobinsCountdownTimezone',    'linkrobins-countdown-widget.timezone')

@@ -41,6 +41,14 @@ app.initializers.add('linkrobins/countdown-widget', () => {
     })
 
     .registerSetting({
+      setting: 'linkrobins-countdown-widget.description',
+      type: 'text',
+      label: t('description_label'),
+      help: t('description_help'),
+      placeholder: t('description_placeholder'),
+    })
+
+    .registerSetting({
       setting: 'linkrobins-countdown-widget.icon',
       type: 'text',
       label: t('icon_label'),
