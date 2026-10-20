@@ -3,6 +3,22 @@ import type Mithril from 'mithril';
 
 import { naiveToUTC, breakDown, twoDigits, TimeParts } from '../utils/time';
 
+/**
+ * The admin's link, or '' when it isn't an http(s) or relative link. A
+ * `javascript:` or `data:` URL would run code when clicked, so it is dropped
+ * and the countdown renders without a link.
+ */
+export function safeLinkUrl(url: string): string {
+  if (!url) return '';
+
+  try {
+    const { protocol } = new URL(url, window.location.href);
+    return protocol === 'http:' || protocol === 'https:' ? url : '';
+  } catch (e) {
+    return '';
+  }
+}
+
 // fof/forum-widgets-core doesn't export a usable type for its Widget base, so
 // accept any constructor (resolved from the registry at call time).
 type WidgetCtor = new (...args: any[]) => any;
@@ -38,6 +54,15 @@ export default function makeCountdownWidget(Widget: WidgetCtor) {
       // its own teardown — today that's a no-op stub, but this subclass
       // shouldn't be the reason a future base-class cleanup never runs.
       super.onremove?.(vnode);
+    }
+
+    view(vnode: Mithril.Vnode) {
+      // On a private forum a guest gets none of the countdown's settings (see
+      // extend.php), so render nothing rather than the "not configured" note.
+      // Absent in the admin layout editor, where the preview always shows.
+      if (app.forum && app.forum.attribute('canViewForum') === false) return null;
+
+      return super.view(vnode);
     }
 
     _computeTarget() {
@@ -108,7 +133,7 @@ export default function makeCountdownWidget(Widget: WidgetCtor) {
       }
 
       const remaining = this._target - Date.now();
-      const linkUrl = this.attr('linkrobinsCountdownLinkUrl');
+      const linkUrl = safeLinkUrl(this.attr('linkrobinsCountdownLinkUrl'));
 
       if (remaining <= 0) {
         return this._renderDone(this.attr('linkrobinsCountdownDoneMessage'), linkUrl);
@@ -122,7 +147,7 @@ export default function makeCountdownWidget(Widget: WidgetCtor) {
       const inner = m('div', { className: 'LinkRobinsCountdown-done' }, msg);
 
       if (linkUrl) {
-        return m('a', { className: 'LinkRobinsCountdown-doneLink', href: linkUrl, rel: 'noopener' }, inner);
+        return m('a', { className: 'LinkRobinsCountdown-doneLink', href: linkUrl }, inner);
       }
       return inner;
     }
@@ -137,7 +162,7 @@ export default function makeCountdownWidget(Widget: WidgetCtor) {
       ]);
 
       if (linkUrl) {
-        return m('a', { className: 'LinkRobinsCountdown-boxesLink', href: linkUrl, rel: 'noopener' }, boxes);
+        return m('a', { className: 'LinkRobinsCountdown-boxesLink', href: linkUrl }, boxes);
       }
       return boxes;
     }

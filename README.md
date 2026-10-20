@@ -42,6 +42,10 @@ In Flarum admin → **Extensions**, find **Link Robins Countdown Widget** under 
 - **Done message** — shown when the countdown hits zero (defaults to 🎉)
 - **Link URL** (optional) — if set, the countdown becomes a clickable link
 
+## Private forums
+
+If guests can't view your forum, they don't get the countdown either: its settings are only sent to visitors who can view the forum, the same as your discussions.
+
 ## How the timezone math works
 
 The target time is stored as a "naive" wall-clock datetime (e.g. `2026-12-31T23:59`) paired with a timezone (e.g. `America/New_York`). At render time, the widget converts that pair into an absolute UTC instant using the browser's `Intl.DateTimeFormat` API, which correctly handles daylight-saving transitions for the target date. Every visitor's browser then counts down to that single instant, so the displayed remaining-time stays consistent across the audience regardless of where each viewer is.
