@@ -32,8 +32,8 @@ type WidgetCtor = new (...args: any[]) => any;
  */
 export default function makeCountdownWidget(Widget: WidgetCtor) {
   return class CountdownWidget extends Widget {
-    private _tick: ReturnType<typeof setInterval> | null = null;
-    private _target: number | null = null;
+    _tick: ReturnType<typeof setInterval> | null = null;
+    _target: number | null = null;
 
     // Forum attributes are absent in the admin frontend, where the widget is
     // rendered as a preview by the layout editor — fall back gracefully.
