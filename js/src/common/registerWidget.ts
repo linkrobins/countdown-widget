@@ -1,4 +1,5 @@
-import type Application from 'flarum/common/Application';
+import type ForumApplication from 'flarum/forum/ForumApplication';
+import type AdminApplication from 'flarum/admin/AdminApplication';
 import makeCountdownWidget from './components/makeCountdownWidget';
 
 /**
@@ -10,7 +11,7 @@ import makeCountdownWidget from './components/makeCountdownWidget';
  * initializer time) via the registry rather than top-level `ext:` imports, so
  * they are guaranteed to be loaded before the widget class is defined.
  */
-export default function registerWidget(app: Application): void {
+export default function registerWidget(app: ForumApplication | AdminApplication): void {
   const Widget = flarum.reg.get('fof-forum-widgets-core', 'common/components/Widget');
   const Widgets = flarum.reg.get('fof-forum-widgets-core', 'common/extend/Widgets');
 
