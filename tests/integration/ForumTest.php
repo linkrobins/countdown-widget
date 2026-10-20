@@ -9,6 +9,7 @@
 
 namespace LinkRobins\CountdownWidget\Tests\integration;
 
+use Flarum\Testing\integration\RetrievesAuthorizedUsers;
 use Flarum\Testing\integration\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -19,6 +20,8 @@ use PHPUnit\Framework\Attributes\Test;
  */
 class ForumTest extends TestCase
 {
+    use RetrievesAuthorizedUsers;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -26,10 +29,13 @@ class ForumTest extends TestCase
         $this->extension('linkrobins-countdown-widget');
     }
 
-    /** @return array<string, mixed> */
-    private function forumAttributes(): array
+    /**
+     * @param array<string, mixed> $options
+     * @return array<string, mixed>
+     */
+    private function forumAttributes(array $options = []): array
     {
-        $response = $this->send($this->request('GET', '/api'));
+        $response = $this->send($this->request('GET', '/api', $options));
         $this->assertEquals(200, $response->getStatusCode());
 
         return json_decode($response->getBody()->getContents(), true)['data']['attributes'];
@@ -69,5 +75,47 @@ class ForumTest extends TestCase
         $this->assertSame('2027-01-01T00:00', $a['linkrobinsCountdownTarget']);
         $this->assertSame('America/New_York', $a['linkrobinsCountdownTimezone']);
         $this->assertSame('https://example.com/launch', $a['linkrobinsCountdownLinkUrl']);
+    }
+
+    /**
+     * "View forum" set to Members: guests lose the permission, members keep it.
+     */
+    private function makeForumPrivate(): void
+    {
+        $this->prepareDatabase([
+            'users' => [$this->normalUser()],
+            'group_permission' => [['permission' => 'viewForum', 'group_id' => 3]],
+        ]);
+
+        $this->setting('linkrobins-countdown-widget.title', 'Members-only launch');
+        $this->setting('linkrobins-countdown-widget.target', '2027-01-01T00:00');
+
+        // Boots the app, so the settings above must come first.
+        $this->database()->table('group_permission')
+            ->where('permission', 'viewForum')
+            ->where('group_id', 2)
+            ->delete();
+    }
+
+    #[Test]
+    public function guests_get_no_countdown_on_a_private_forum(): void
+    {
+        $this->makeForumPrivate();
+
+        $a = $this->forumAttributes();
+        $this->assertFalse($a['canViewForum']);
+        foreach (['Title', 'Description', 'Icon', 'Target', 'Timezone', 'DoneMessage', 'LinkUrl'] as $key) {
+            $this->assertArrayNotHasKey('linkrobinsCountdown'.$key, $a, $key);
+        }
+    }
+
+    #[Test]
+    public function members_still_get_the_countdown_on_a_private_forum(): void
+    {
+        $this->makeForumPrivate();
+
+        $a = $this->forumAttributes(['authenticatedAs' => 2]);
+        $this->assertSame('Members-only launch', $a['linkrobinsCountdownTitle']);
+        $this->assertSame('2027-01-01T00:00', $a['linkrobinsCountdownTarget']);
     }
 }

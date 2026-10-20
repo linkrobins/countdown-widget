@@ -40,6 +40,15 @@ export default function makeCountdownWidget(Widget: WidgetCtor) {
       super.onremove?.(vnode);
     }
 
+    view(vnode: Mithril.Vnode) {
+      // On a private forum a guest gets none of the countdown's settings (see
+      // extend.php), so render nothing rather than the "not configured" note.
+      // Absent in the admin layout editor, where the preview always shows.
+      if (app.forum && app.forum.attribute('canViewForum') === false) return null;
+
+      return super.view(vnode);
+    }
+
     _computeTarget() {
       const raw = this.attr('linkrobinsCountdownTarget');
       const tz = this.attr('linkrobinsCountdownTimezone') || 'UTC';
