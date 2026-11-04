@@ -1,56 +1,63 @@
 # Link Robins Countdown Widget
 
-A configurable countdown widget for [Flarum 2.0](https://flarum.org), built as a widget for [`fof/forum-widgets-core`](https://packagist.org/packages/fof/forum-widgets-core). Same skeleton as [`linkrobins/html-widget`](https://packagist.org/packages/linkrobins/html-widget) and [`linkrobins/markdown-widget`](https://packagist.org/packages/linkrobins/markdown-widget).
-
-## What it does
-
-Renders a four-box countdown — days, hours, minutes, seconds — ticking down to an admin-configured moment. When it hits zero, shows a configurable "done" message. Optionally wraps the whole thing in a link.
+A configurable countdown widget for [Flarum 2](https://flarum.org), built as a widget for [`fof/forum-widgets-core`](https://packagist.org/packages/fof/forum-widgets-core). It ticks down to a moment you choose and shows a message when it arrives.
 
 ## Features
 
-- **Configurable target** via the browser's native date+time picker (year, month, day, hour, minute)
-- **Timezone-aware** — admin picks the IANA timezone for the target, and every visitor counts down to the same actual instant regardless of where they are
-- **One tick per second** with smooth Mithril redraws
-- **Optional title, description, and FontAwesome icon** above the countdown
-- **Done state** with a configurable message (defaults to 🎉) when the countdown reaches zero
-- **Optional link** wrapping the whole widget — useful for "launching in… [click for details]"
-- **Theme-friendly** — uses Flarum 2's CSS custom properties so colors pick up your theme automatically
-- **Tabular-numerics font feature** so digits don't jitter as they tick
+- **Four-box countdown.** Days, hours, minutes and seconds, updating once per second. Days are not padded once they reach three digits, so a year-long countdown reads "365".
+- **Configurable target** through the browser's native date and time picker (year, month, day, hour, minute).
+- **Timezone-aware.** You pick the IANA timezone the target is in, and every visitor counts down to the same actual instant wherever they are. Daylight-saving changes for the target date are handled. A "Use my timezone" button fills in your browser's zone.
+- **Optional title, description and icon.** A heading, small text under it (a date range, a venue, anything), and a FontAwesome icon. If you leave the title empty, an icon and/or description still get a header of their own.
+- **Done state.** When the countdown reaches zero it shows your message, or a party emoji if you left it blank. The widget stops ticking once it is done, and a target already in the past shows the done message straight away.
+- **Optional link.** Make the whole countdown (and the done message) a clickable link, for example "launching in..." pointing at the details. Only `http`, `https` and site-relative links are used; anything else is ignored and the countdown shows without a link.
+- **Theme-friendly.** Colors come from Flarum 2's CSS custom properties, so it follows your theme, light or dark. Digits use tabular numerals so they do not jitter as they tick.
+- **Private forums.** If guests cannot view your forum, they do not get the countdown either: its settings are only sent to visitors who can view the forum, like your discussions.
+- **Previews in the layout editor.** The widget shows up live in the Forum Widgets layout editor in the admin panel.
+
+Until a target is set, the widget shows a note asking for one.
+
+## Settings
+
+Admin, then Extensions, then Link Robins Countdown Widget.
+
+| Setting | Default | What it does |
+|---|---|---|
+| Title | empty | Shown above the countdown. Leave blank for no heading. |
+| Description | empty | Small text under the title: a date range, a venue, any extra detail. |
+| Icon class | empty | FontAwesome class shown next to the title, such as `fas fa-rocket`. |
+| Target date and time | empty | The moment to count down to, in the timezone below. |
+| Timezone | UTC | IANA name such as `UTC`, `America/New_York`, `Europe/London` or `Asia/Tokyo`. |
+| Done message | empty (shows a party emoji) | Shown when the countdown reaches zero. |
+| Link URL | empty | If set, the countdown becomes a clickable link to this address. |
+
+The widget is a single instance. It is added to the top of the forum's start column by default, and you can move it from the **FoF Forum Widgets** layout editor. The extension adds no permissions and no database tables.
 
 ## Requirements
 
-- Flarum **2.0** or later
-- PHP **8.2** or later
+- Flarum 2.x
+- PHP 8.3 or newer
 - [`fof/forum-widgets-core`](https://packagist.org/packages/fof/forum-widgets-core) installed and enabled
 
 ## Installation
 
-```
+```sh
 composer require linkrobins/countdown-widget
+```
+
+Then toggle it on in the admin panel's **Extensions** page (it is listed under **Forum Widgets**), configure the target on its settings page, and place the widget in the **FoF Forum Widgets** layout editor.
+
+## Updating
+
+```sh
+composer update linkrobins/countdown-widget
 php flarum cache:clear
 ```
 
-In Flarum admin → **Extensions**, find **Link Robins Countdown Widget** under the **Forum Widgets** category and enable it. Configure the target on its settings page, then go to **FoF Forum Widgets** settings and place the widget where you want it.
-
-## Settings
-
-- **Title** (optional) — shown above the countdown
-- **Description** (optional): small text shown under the title, for a date range, a venue, or any extra detail
-- **Icon** (optional) — FontAwesome class shown next to the title (e.g. `fas fa-rocket`)
-- **Target date and time** — uses the browser's date picker; covers year, month, day, hour, and minute
-- **Timezone** — IANA name like `UTC`, `America/New_York`, `Europe/London`, `Asia/Tokyo`. There's a "Use my timezone" button that fills this with whatever your browser thinks the local zone is
-- **Done message** — shown when the countdown hits zero (defaults to 🎉)
-- **Link URL** (optional) — if set, the countdown becomes a clickable link
-
-## Private forums
-
-If guests can't view your forum, they don't get the countdown either: its settings are only sent to visitors who can view the forum, the same as your discussions.
-
 ## How the timezone math works
 
-The target time is stored as a "naive" wall-clock datetime (e.g. `2026-12-31T23:59`) paired with a timezone (e.g. `America/New_York`). At render time, the widget converts that pair into an absolute UTC instant using the browser's `Intl.DateTimeFormat` API, which correctly handles daylight-saving transitions for the target date. Every visitor's browser then counts down to that single instant, so the displayed remaining-time stays consistent across the audience regardless of where each viewer is.
+The target is stored as a wall-clock date and time (for example `2026-12-31T23:59`) paired with a timezone (for example `America/New_York`). At render time the widget converts that pair into one absolute instant using the browser's `Intl.DateTimeFormat` API, which accounts for daylight saving on the target date. Every visitor's browser then counts down to that single instant, which avoids the classic bug where the admin sets 11pm and visitors elsewhere see a different time.
 
-This avoids the most common countdown widget bug: "the admin set it for 11pm but my visitors in Tokyo see a different time."
+One edge case: a target set inside the single skipped or repeated hour of a daylight-saving change can land an hour off. Pick a time outside that hour.
 
 ## License
 
